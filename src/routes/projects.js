@@ -6,7 +6,7 @@ const cloudinary = require('../utils/cloudinary')
 // GET all active projects (public)
 router.get('/', async (req, res) => {
   try {
-    const projects = await Project.find({ isActive: true }).sort({ createdAt: -1 })
+    const projects = await Project.find({ isActive: { $ne: false } }).sort({ createdAt: -1 })
     res.json(projects)
   } catch {
     res.status(500).json({ message: 'Server error' })

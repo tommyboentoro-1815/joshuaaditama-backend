@@ -12,6 +12,7 @@ const projectSchema = new mongoose.Schema({
   bodyDescriptionTwo: { type: [String], default: null },
   images:             { type: [String], required: true },
   featured:           { type: Boolean, default: false },
+  isActive:           { type: Boolean, default: true },
 }, { timestamps: true })
 
 module.exports = mongoose.model('Project', projectSchema)

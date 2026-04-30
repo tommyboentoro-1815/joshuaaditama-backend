@@ -3,8 +3,18 @@ const Project = require('../models/Project')
 const authMiddleware = require('../middleware/auth')
 const cloudinary = require('../utils/cloudinary')
 
-// GET all projects (public)
+// GET all active projects (public)
 router.get('/', async (req, res) => {
+  try {
+    const projects = await Project.find({ isActive: true }).sort({ createdAt: -1 })
+    res.json(projects)
+  } catch {
+    res.status(500).json({ message: 'Server error' })
+  }
+})
+
+// GET all projects including drafts (protected — admin only)
+router.get('/all', authMiddleware, async (req, res) => {
   try {
     const projects = await Project.find().sort({ createdAt: -1 })
     res.json(projects)

@@ -12,14 +12,16 @@ router.get('/', auth, async (req, res) => {
       cloudinary.api.usage(),
     ])
 
+    const CLOUDINARY_FREE_LIMIT = 25 * 1024 * 1024 * 1024 // 25 GB
+
     res.json({
       mongodb: {
         usedBytes: dbStats.dataSize + dbStats.indexSize,
-        limitBytes: 512 * 1024 * 1024, // Atlas free tier: 512 MB
+        limitBytes: 512 * 1024 * 1024,
       },
       cloudinary: {
         usedBytes: cloudinaryUsage.storage.usage,
-        limitBytes: cloudinaryUsage.storage.limit,
+        limitBytes: cloudinaryUsage.storage.limit || CLOUDINARY_FREE_LIMIT,
       },
     })
   } catch (err) {

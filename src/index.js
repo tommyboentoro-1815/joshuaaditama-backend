@@ -6,6 +6,7 @@ const cors = require('cors')
 const authRoutes = require('./routes/auth')
 const projectRoutes = require('./routes/projects')
 const uploadRoutes = require('./routes/upload')
+const statsRoutes = require('./routes/stats')
 
 const app = express()
 
@@ -16,6 +17,7 @@ app.use(express.json())
 app.use('/auth', authRoutes)
 app.use('/projects', projectRoutes)
 app.use('/upload', uploadRoutes)
+app.use('/stats', statsRoutes)
 
 app.get('/', (req, res) => {
   res.json({ message: 'Joshua Aditama API is running' })

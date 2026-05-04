@@ -47,9 +47,16 @@ router.post('/', authMiddleware, async (req, res) => {
 // PUT update project (protected)
 router.put('/:id', authMiddleware, async (req, res) => {
   try {
-    const project = await Project.findByIdAndUpdate(req.params.id, req.body, { new: true })
+    const project = await Project.findById(req.params.id)
     if (!project) return res.status(404).json({ message: 'Project not found' })
-    res.json(project)
+
+    // Block activation if no images
+    if (req.body.isActive === true && (!project.images || project.images.length === 0)) {
+      return res.status(400).json({ message: 'Add at least 1 image before activating this project.' })
+    }
+
+    const updated = await Project.findByIdAndUpdate(req.params.id, req.body, { new: true })
+    res.json(updated)
   } catch (err) {
     res.status(400).json({ message: err.message })
   }
